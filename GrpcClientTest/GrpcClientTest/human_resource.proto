@@ -1,0 +1,41 @@
+syntax = "proto3";
+package grpcserver.humanresource;
+
+option csharp_namespace = "GrpcServer.HumanResource";
+//option csharp_namespace = "GrpcServiceTest.Protos";
+
+service Employee {
+	rpc GetEmployee (EmployeeRequest) returns (EmployeeModel);
+	rpc GetAllEmployees (EmployeeRequest) returns (stream EmployeeModel);
+	rpc AddEmployee (EmployeeModel) returns (EmployeeAddedResult);
+	rpc AddEmployees (stream EmployeeModel) returns (EmployeeAddedResult);
+}
+
+message EmployeeRequest {
+	int32 id = 1;
+}
+
+message EmployeeModel {
+	int32 id = 1;
+	string name = 2;
+
+	message PhoneNumber {
+		string value = 1;
+	}
+
+	repeated PhoneNumber phone_numbers = 3;
+
+	EmployeeType employee_type = 4;
+
+	int64 modifiedTime = 5;
+}
+
+enum EmployeeType {
+	FIRST_LEVEL = 0;
+	SECOND_LEVEL = 1;
+	LAST_LEVEL = 2;
+}
+
+message EmployeeAddedResult {
+	bool is_success = 1;
+}
